@@ -1,0 +1,39 @@
+{
+  "name": "onlinescore",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=24.22.2 <25"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0 --port 3006",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0 --port 3006",
+    "typecheck": "tsc --noEmit",
+    "test": "node --conditions=react-server --experimental-strip-types --test src/modules/scores/mappers/scores-mapper.test.ts src/modules/scores/lib/scoreboard.test.ts src/lib/server/http-client.test.ts",
+    "check:docs": "node scripts/check-docs.mjs",
+    "assets:logos": "node scripts/cut-logos.mjs"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "5.104.1",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "google-auth-library": "11.3.1",
+    "lucide-react": "1.61.0",
+    "next": "16.4.2",
+    "radix-ui": "1.8.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "0.0.1",
+    "tailwind-merge": "3.7.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "sharp": "0.35.5",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3"
+  }
+}
