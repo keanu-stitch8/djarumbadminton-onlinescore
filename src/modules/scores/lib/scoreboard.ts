@@ -16,8 +16,11 @@ export function currentGame(match: CourtMatch): number {
   return 0;
 }
 
+// [ISO code for flagcdn, display name]. An empty ISO code shows the neutral placeholder.
+// Chinese Taipei competes under the Chinese Taipei Olympic flag, not the ROC flag that flagcdn
+// serves for "TW"; until that emblem is added as a local asset, it gets no flag image.
 const countries: Record<string, [string, string]> = {
-  INA: ["ID", "Indonesia"], IDN: ["ID", "Indonesia"], TPE: ["TW", "Chinese Taipei"],
+  INA: ["ID", "Indonesia"], IDN: ["ID", "Indonesia"], TPE: ["", "Chinese Taipei"],
   CHN: ["CN", "China"], MAS: ["MY", "Malaysia"], THA: ["TH", "Thailand"],
   JPN: ["JP", "Jepang"], KOR: ["KR", "Korea Selatan"], IND: ["IN", "India"],
   SGP: ["SG", "Singapura"], VIE: ["VN", "Vietnam"], HKG: ["HK", "Hong Kong"],
@@ -28,6 +31,7 @@ const countries: Record<string, [string, string]> = {
 export function countryFlag(code: string): { flag: string; name: string } {
   const country = countries[code.toUpperCase()];
   if (!country) return { flag: "", name: code };
+  if (!country[0]) return { flag: "", name: country[1] };
   const iso = country[0].toLowerCase();
   return { flag: iso === "id" ? "/flags/id.svg" : `https://flagcdn.com/${iso}.svg`, name: country[1] };
 }

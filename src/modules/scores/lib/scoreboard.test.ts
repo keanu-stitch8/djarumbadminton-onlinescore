@@ -63,3 +63,8 @@ test("the Kaliputu feed gets U19 in the title, whichever prefix spelling the fee
     assert.deepEqual(venueHeading(path), { title: "MilkLife Indonesia Junior International Series 2026 (U19)", subtitle: null });
   }
 });
+
+test("Chinese Taipei never shows the ROC flag; it keeps its name with a neutral placeholder", () => {
+  assert.deepEqual(countryFlag("TPE"), { flag: "", name: "Chinese Taipei" });
+  assert.deepEqual(countryFlag("tpe"), { flag: "", name: "Chinese Taipei" });
+});
