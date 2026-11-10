@@ -1,0 +1,12 @@
+/* Same Tailwind theme and component CSS as the Next.js app. */
+@import "../../src/app/globals.css";
+
+/* Tailwind scans the shared components plus this static app for class names. */
+@source "../../src";
+@source "./";
+
+/* next/font sets these in the Next.js app; here the fonts come from Google Fonts in index.html. */
+:root {
+  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-barlow-condensed: "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
+}

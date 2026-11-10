@@ -9,8 +9,11 @@
     "dev": "next dev --hostname 0.0.0.0 --port 3006",
     "build": "next build",
     "start": "next start --hostname 0.0.0.0 --port 3006",
+    "static:dev": "vite --config static/vite.config.mts",
+    "static:build": "vite build --config static/vite.config.mts",
+    "static:preview": "vite preview --config static/vite.config.mts",
     "typecheck": "tsc --noEmit",
-    "test": "node --conditions=react-server --experimental-strip-types --test src/modules/scores/mappers/scores-mapper.test.ts src/modules/scores/lib/scoreboard.test.ts src/lib/server/http-client.test.ts src/lib/server/ttl-cache.test.ts",
+    "test": "node --conditions=react-server --experimental-strip-types --test src/modules/scores/mappers/scores-mapper.test.ts src/modules/scores/lib/scoreboard.test.ts src/lib/server/http-client.test.ts src/lib/server/ttl-cache.test.ts static/src/firebase-stream.test.ts",
     "check:docs": "node scripts/check-docs.mjs",
     "assets:logos": "node scripts/cut-logos.mjs"
   },
@@ -29,11 +32,14 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
     "@types/node": "24.19.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
     "sharp": "0.35.5",
     "tailwindcss": "4.3.3",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite": "8.3.5"
   }
 }

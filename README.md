@@ -85,3 +85,30 @@ npm start
 
 If a constrained environment disallows the local sockets used internally by Turbopack, use
 `npm run build -- --webpack`. This builds the same Next.js app without Turbopack's worker sockets.
+
+## Static version (no Node.js on the server)
+
+`static/` builds the same live score page as plain HTML/JS/CSS for servers that cannot run a
+modern Node.js (e.g. CentOS 6). It reuses the shared components, Tailwind CSS and score logic
+from `src/`, but reads Firebase directly in the browser through the Realtime Database REST
+streaming API (Server-Sent Events) instead of polling `/api/scores`.
+
+```sh
+npm run static:dev      # http://localhost:3007
+npm run static:build    # output: static/dist/
+npm run static:preview  # serve static/dist on http://localhost:3008
+```
+
+Build on your machine and commit `static/dist/` (it is tracked on purpose, so the server only
+needs `git pull`), then copy its contents to any folder served by the web server; asset paths are relative, so a subfolder such as `/onlinescore/` works. Override the source
+at build time with `VITE_FIREBASE_DATABASE_URL` / `VITE_FIREBASE_DATABASE_PATH`.
+
+The page title and subtitle follow the feed's venue (`venueHeading()` in
+`src/modules/scores/lib/scoreboard.ts`): `…-jati` adds "(U17, U15, U13)" and the GOR Djarum Jati
+location, `…-kaliputu` adds "(U19)". Each venue therefore needs its own build, for example
+`VITE_FIREBASE_DATABASE_PATH=bdmntn-kaliputu npm run static:build`. The Next.js app uses
+`FIREBASE_DATABASE_PATH` the same way.
+
+Limits: this only works while the database allows public reads (a static site cannot hold
+credentials), and each open page holds one Firebase connection, so the Firebase plan's
+simultaneous-connection limit applies (100 on the free Spark plan).
