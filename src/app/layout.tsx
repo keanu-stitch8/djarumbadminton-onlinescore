@@ -13,7 +13,7 @@ const barlow = Barlow_Condensed({
 
 export const metadata: Metadata = {
   title: "Live Score · MilkLife Indonesia Junior International Series 2026",
-  description: "Pantau skor badminton per lapangan, pemain, dan gim. MilkLife Indonesia Junior International Series 2026.",
+  description: "Pantau skor badminton per lapangan, pemain, dan pertandingan. MilkLife Indonesia Junior International Series 2026.",
   robots: { index: false, follow: false },
 };
 export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#172e78" };

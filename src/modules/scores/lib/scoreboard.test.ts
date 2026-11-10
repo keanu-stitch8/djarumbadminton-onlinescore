@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { filterMatches, currentGame, isSourceStale, countryFlag, matchProgress, venueHeading } from "./scoreboard.ts";
+import { filterMatches, currentGame, isBoardIdle, isSourceStale, countryFlag, matchProgress, venueHeading } from "./scoreboard.ts";
 import { mapCourtMatch } from "../mappers/scores-mapper.ts";
 
 const first = mapCourtMatch({ court: 1, kelompok_pertandingan: "MS-U13", team1_fullname: "MIRZA", team1_club1: "INA", team1set1: "21", team2set1: "19", team1set2: "0", team1set3: "0" })!;
@@ -39,6 +39,13 @@ test("one completed game and deuce do not establish a match winner", () => {
   assert.deepEqual(matchProgress(waiting), { winner: null, started: false });
 });
 
+test("the board is idle only when every court is waiting or there are no courts", () => {
+  const waiting = mapCourtMatch({ court: 3, team1set1: "", team2set1: "" })!;
+  assert.equal(isBoardIdle([]), true);
+  assert.equal(isBoardIdle([waiting, { ...waiting, id: "court-4", court: "4" }]), true);
+  assert.equal(isBoardIdle([waiting, first]), false);
+});
+
 test("two valid game wins identify the winner, including the 30-point cap", () => {
   const completed = mapCourtMatch({ court: 9, team1set1: 9, team2set1: 21, team1set2: 4, team2set2: 21 })!;
   assert.deepEqual(matchProgress(completed), { winner: 1, started: true });
@@ -49,7 +56,7 @@ test("two valid game wins identify the winner, including the 30-point cap", () =
 test("the Jati feed gets its age groups in the title and the venue as subtitle", () => {
   assert.deepEqual(venueHeading("bdmntn-jati"), {
     title: "MilkLife Indonesia Junior International Series 2026 (U17, U15, U13)",
-    subtitle: "GOR Djarum, Jati, Kudus, Jawa Tengah",
+    subtitle: "GOR Djarum, Jati, Kudus, Central Java, Indonesia",
   });
   assert.deepEqual(venueHeading("/bdmntn-jati/"), venueHeading("bdmntn-jati"));
 });

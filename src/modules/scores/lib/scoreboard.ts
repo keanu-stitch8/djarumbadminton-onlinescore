@@ -61,6 +61,12 @@ export function categoryLabel(code: string): string {
   return names[discipline] ? `${names[discipline]}${age ? ` · ${age}` : ""}` : code;
 }
 
+// The feed has no "no matches" status either: an idle venue is one where every court is cleared
+// down to its number (or the feed has no courts at all).
+export function isBoardIdle(matches: CourtMatch[]): boolean {
+  return matches.every((match) => !match.available);
+}
+
 export function isSourceStale(updatedAt: string | null, now: number): boolean {
   return !updatedAt || now - Date.parse(updatedAt) > 120_000;
 }
@@ -70,7 +76,7 @@ const EVENT_TITLE = "MilkLife Indonesia Junior International Series 2026";
 // Per-venue heading. Keyed by the venue name after the last "-" of the Firebase feed path
 // ("bdmntn-jati" -> "jati"), so prefix spellings such as "bdmtn-" still match.
 const venues: Record<string, { ageGroups: string[]; location: string | null }> = {
-  jati: { ageGroups: ["U17", "U15", "U13"], location: "GOR Djarum, Jati, Kudus, Jawa Tengah" },
+  jati: { ageGroups: ["U17", "U15", "U13"], location: "GOR Djarum, Jati, Kudus, Indonesia" },
   kaliputu: { ageGroups: ["U19"], location: null },
 };
 

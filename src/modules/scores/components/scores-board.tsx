@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Alert } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { withBasePath } from "@/lib/base-path";
-import { isSourceStale } from "../lib/scoreboard";
+import { isBoardIdle, isSourceStale } from "../lib/scoreboard";
 import type { ScoreboardData, ScoreboardResult } from "../types/scores";
+import { IdleBoard } from "./idle-board";
 import { MatchCard } from "./match-card";
 import { ScoresSkeleton } from "./scores-skeleton";
 import { ScoreboardTitle } from "./scoreboard-title";
@@ -68,10 +69,10 @@ export function ScoresBoard({ initialResult, feedPath }: { initialResult: Scoreb
       {stale && data && !errorMessage && !offline && <div className="source-notice" role="status"><Clock3 size={15} /><span>Sumber belum mengirim pembaruan terbaru.{data.sourceUpdatedAt && <> Data sumber: <strong>{dateTime(data.sourceUpdatedAt)} WIB</strong>.</>}</span></div>}
 
       {!data && !offline && (query.isPending || query.isFetching) ? <ScoresSkeleton /> : !data ? <div className="state-panel" role="alert"><div className="state-icon"><WifiOff size={27} /></div><h3>{offline ? "Anda sedang offline" : "Skor belum dapat dimuat"}</h3><p>{offline ? "Hubungkan perangkat ke internet. Skor akan dimuat kembali secara otomatis." : query.error?.message || (!initialResult.ok ? initialResult.message : "Mencoba menghubungkan ke sumber skor.")}</p><Button onClick={() => void query.refetch()} variant="outline"><RefreshCw />Coba lagi</Button></div>
-        : matches.length === 0 ? <div className="state-panel"><h3>Belum ada pertandingan</h3><p>Skor akan muncul saat data pertandingan tersedia.</p></div>
+        : isBoardIdle(matches) ? <IdleBoard courts={matches.length} />
           : <div className="display-grid">{matches.map((m) => <MatchCard match={m} key={m.id} animateIndicator={!stale && !offline && !query.isError} />)}</div>}
 
-      <div className="board-bottom"><div className="score-legend"><span className="size-2 rounded-full bg-emerald-500" aria-hidden="true" /><span>Indikator pemain</span><span className="legend-divider">·</span><span>G1–G3: gim</span></div><span className="auto-refresh-label">Pembaruan otomatis · 2 detik</span></div>
+      <div className="board-bottom"><div className="score-legend"><span className="size-2 rounded-full bg-emerald-500" aria-hidden="true" /><span>Indikator pemain</span><span className="legend-divider">·</span><span>G1–G3: pertandingan</span></div><span className="auto-refresh-label">Pembaruan otomatis · 2 detik</span></div>
     </section>
 
   </div>;

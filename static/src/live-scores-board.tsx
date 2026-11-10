@@ -3,10 +3,11 @@ import { AlertCircle, Clock3, RefreshCw, Signal, WifiOff } from "lucide-react";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { IdleBoard } from "@/modules/scores/components/idle-board";
 import { MatchCard } from "@/modules/scores/components/match-card";
 import { ScoreboardTitle } from "@/modules/scores/components/scoreboard-title";
 import { ScoresSkeleton } from "@/modules/scores/components/scores-skeleton";
-import { isSourceStale } from "@/modules/scores/lib/scoreboard";
+import { isBoardIdle, isSourceStale } from "@/modules/scores/lib/scoreboard";
 import { feedPath, streamUrl } from "./config";
 import { useFirebaseScores } from "./use-firebase-scores";
 
@@ -48,10 +49,10 @@ export function LiveScoresBoard() {
 
       {!data && !error && !offline ? <ScoresSkeleton />
         : !data ? <div className="state-panel" role="alert"><div className="state-icon"><WifiOff size={27} /></div><h3>{offline ? "Anda sedang offline" : "Skor belum dapat dimuat"}</h3><p>{offline ? "Hubungkan perangkat ke internet. Skor akan dimuat kembali secara otomatis." : error}</p><Button onClick={reconnect} variant="outline"><RefreshCw />Coba lagi</Button></div>
-          : matches.length === 0 ? <div className="state-panel"><h3>Belum ada pertandingan</h3><p>Skor akan muncul saat data pertandingan tersedia.</p></div>
+          : isBoardIdle(matches) ? <IdleBoard courts={matches.length} />
             : <div className="display-grid">{matches.map((m) => <MatchCard match={m} key={m.id} animateIndicator={!stale && !offline && !troubled} />)}</div>}
 
-      <div className="board-bottom"><div className="score-legend"><span className="size-2 rounded-full bg-emerald-500" aria-hidden="true" /><span>Indikator pemain</span><span className="legend-divider">·</span><span>G1–G3: gim</span></div><span className="auto-refresh-label">Pembaruan real-time</span></div>
+      <div className="board-bottom"><div className="score-legend"><span className="size-2 rounded-full bg-emerald-500" aria-hidden="true" /><span>Indikator pemain</span><span className="legend-divider">·</span><span>G1–G3: pertandingan</span></div><span className="auto-refresh-label">Pembaruan real-time</span></div>
     </section>
   </div>;
 }

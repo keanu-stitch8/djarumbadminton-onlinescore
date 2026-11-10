@@ -35,8 +35,8 @@ internal endpoint.
 
 The configured node contains `{ match, updatedAt }`. `match` may be an array, a keyed object,
 `null`, or absent: when a match ends the scorer clears that court, and Firebase drops keys whose
-value becomes empty, so a fully cleared feed has no `match` key and shows an empty board. A court
-cleared down to just its number (e.g. `{ court: 7 }`) stays visible as a waiting court. Null holes
+value becomes empty, so a fully cleared feed has no `match` key and maps to an empty list. A court
+cleared down to just its number (e.g. `{ court: 7 }`) maps to a waiting court (`available: false`). Null holes
 and entries whose court number is blank or missing are skipped. Other entries must be objects with
 a usable numeric court identifier; duplicate courts and malformed records (e.g. `court: "abc"`)
 fail validation rather than turning into empty success. A null root is a missing node.
@@ -95,7 +95,10 @@ a retry action; the last successful score payload remains visible. Recovery clea
 - Missing node -> HTTP 404 and explicit error result.
 - Invalid/configuration/auth/transport failure -> HTTP 503 and a safe error result.
 - Empty match collection -> HTTP 200 and an intentional empty state.
-- Empty court slots -> remain visible as waiting courts.
+- Empty court slots -> remain visible as waiting courts while at least one court has a match.
+- Every court waiting, or no courts at all -> `isBoardIdle()` replaces the cards with one
+  "Tidak ada pertandingan berlangsung" panel. The feed has no status field; this is derived only
+  from the courts being cleared.
 
 ## Server credentials
 
