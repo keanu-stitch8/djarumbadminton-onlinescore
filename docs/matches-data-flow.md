@@ -66,9 +66,13 @@ offline state and refresh errors disable the pulse to avoid implying a fresh liv
 
 ## Freshness and errors
 
-Live scores deliberately omit persistent service caching. Transport uses `cache: no-store`;
-React `cache()` deduplicates query work within one server request only. This is an explicit live
-score exception to persistent service caching in the global contract.
+Live scores use a short in-memory service cache instead of `'use cache'`. `getScoreboardData()`
+reuses a successful Firebase read for 1.5 seconds per server process (`createCachedLoader()` in
+`src/lib/server/ttl-cache.ts`), and concurrent requests share one in-flight read. Firebase load
+therefore stays at about one read per 1.5 seconds per instance, no matter how many viewers poll.
+Failures are never cached. Transport still uses `cache: no-store`, and React `cache()` only
+deduplicates work inside one server request. This is an explicit live-score exception to the
+persistent service caching in the global contract.
 
 TanStack Query refreshes every two seconds while the page is visible, retries a failed request
 once and refreshes on focus/reconnection. It retains the last successful canonical payload on a

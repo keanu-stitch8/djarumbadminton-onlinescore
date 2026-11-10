@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start --hostname 0.0.0.0 --port 3006",
     "typecheck": "tsc --noEmit",
-    "test": "node --conditions=react-server --experimental-strip-types --test src/modules/scores/mappers/scores-mapper.test.ts src/modules/scores/lib/scoreboard.test.ts src/lib/server/http-client.test.ts",
+    "test": "node --conditions=react-server --experimental-strip-types --test src/modules/scores/mappers/scores-mapper.test.ts src/modules/scores/lib/scoreboard.test.ts src/lib/server/http-client.test.ts src/lib/server/ttl-cache.test.ts",
     "check:docs": "node scripts/check-docs.mjs",
     "assets:logos": "node scripts/cut-logos.mjs"
   },
