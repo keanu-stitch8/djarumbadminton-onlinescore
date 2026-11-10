@@ -10,6 +10,7 @@ import { isSourceStale } from "../lib/scoreboard";
 import type { ScoreboardData, ScoreboardResult } from "../types/scores";
 import { MatchCard } from "./match-card";
 import { ScoresSkeleton } from "./scores-skeleton";
+import { ScoreboardTitle } from "./scoreboard-title";
 
 async function fetchScores(): Promise<ScoreboardData> {
   let response: Response;
@@ -29,7 +30,7 @@ function dateTime(value: string): string {
   return new Intl.DateTimeFormat("id-ID", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Asia/Jakarta" }).format(new Date(value));
 }
 
-export function ScoresBoard({ initialResult }: { initialResult: ScoreboardResult }) {
+export function ScoresBoard({ initialResult, feedPath }: { initialResult: ScoreboardResult; feedPath: string }) {
   const [offline, setOffline] = useState(false);
   const [now, setNow] = useState(initialResult.ok ? Date.parse(initialResult.data.fetchedAt) : 0);
   const query = useQuery({
@@ -56,7 +57,7 @@ export function ScoresBoard({ initialResult }: { initialResult: ScoreboardResult
 
 
   return <div className="page-width scoreboard-content display-content">
-    <div className="display-title-row"><h1>MilkLife Indonesia Junior International Series 2026</h1></div>
+    <ScoreboardTitle feedPath={feedPath} />
 
     <section className="scoreboard-panel" aria-label="Skor seluruh lapangan">
       <div className="scoreboard-toolbar"><div className="toolbar-title"><span className="section-marker" /><h2>SKOR LAPANGAN</h2><span className="court-count">{matches.length}</span></div><div className="connection-group"><span className={cn("connection-status", (query.isError || offline) && "connection-error")} role="status">{offline ? <WifiOff size={13} /> : query.isError ? <AlertCircle size={13} /> : <Signal size={13} />}<span>{offline ? "Offline" : query.isError ? "Menghubungkan ulang" : data ? "Terhubung" : "Menghubungkan"}</span></span><Button variant="ghost" size="icon" className="refresh-button" onClick={() => void query.refetch()} disabled={query.isFetching} aria-label="Perbarui skor"><RefreshCw className={cn(query.isFetching && "animate-spin")} /></Button></div></div>

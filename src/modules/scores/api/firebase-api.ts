@@ -29,9 +29,13 @@ async function getAuthHeaders(): Promise<HeadersInit> {
   }
 }
 
+export function firebaseFeedPath(): string {
+  return process.env.FIREBASE_DATABASE_PATH ?? "bdmntn-jati";
+}
+
 export async function fetchFirebaseScores(): Promise<unknown> {
   const base = process.env.FIREBASE_DATABASE_URL ?? "https://livescore-bdmntn-default-rtdb.asia-southeast1.firebasedatabase.app";
-  const path = process.env.FIREBASE_DATABASE_PATH ?? "bdmntn-jati";
+  const path = firebaseFeedPath();
   let url: URL;
   try {
     url = new URL(base);

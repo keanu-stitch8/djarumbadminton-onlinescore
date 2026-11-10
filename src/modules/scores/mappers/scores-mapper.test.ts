@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mapCourtMatch, mapSourceTimestamp } from "./scores-mapper.ts";
+import { mapCourtMatch, mapScoreboard, mapSourceTimestamp } from "./scores-mapper.ts";
 
 test("score ownership follows team fields even when physical side order swaps", () => {
   const result = mapCourtMatch({ court: "1", kelompok_pertandingan: " MS-U13 ",
@@ -46,4 +46,41 @@ test("source timestamps accept milliseconds, seconds and ISO dates without fabri
   assert.equal(mapSourceTimestamp(1794302394), "2026-11-10T09:19:54.000Z");
   assert.equal(mapSourceTimestamp("2026-11-10T08:39:54.832Z"), "2026-11-10T08:39:54.832Z");
   for (const invalid of [null, undefined, "", "bad-date", {}, true]) assert.equal(mapSourceTimestamp(invalid), null);
+});
+
+test("mapScoreboard validates the feed root and sorts courts numerically", () => {
+  const result = mapScoreboard({ updatedAt: 1794309875128, match: [null, { court: "10", team1_fullname: "B" }, { court: "2", team1_fullname: "A" }] });
+  assert.equal(result.ok, true);
+  if (!result.ok) return;
+  assert.deepEqual(result.data.matches.map((m) => m.court), ["2", "10"]);
+  assert.equal(result.data.sourceUpdatedAt, new Date(1794309875128).toISOString());
+});
+
+test("mapScoreboard reports missing and invalid feeds instead of an empty board", () => {
+  assert.deepEqual(mapScoreboard(null), { ok: false, code: "missing" });
+  assert.deepEqual(mapScoreboard([]), { ok: false, code: "invalid" });
+  assert.deepEqual(mapScoreboard({ match: "x" }), { ok: false, code: "invalid" });
+  assert.deepEqual(mapScoreboard({ match: [{ court: "abc" }] }), { ok: false, code: "invalid" });
+  assert.deepEqual(mapScoreboard({ match: [{ court: 1 }, { court: "1" }] }), { ok: false, code: "invalid" });
+  const empty = mapScoreboard({ match: null });
+  assert.ok(empty.ok && empty.data.matches.length === 0);
+});
+
+test("cleared courts after a match ends stay on the board as empty courts", () => {
+  const result = mapScoreboard({ updatedAt: 1, match: [{ court: "1", team1_fullname_p1: "A", team2_fullname_p1: "B" }, { court: 7 }] });
+  assert.ok(result.ok);
+  assert.deepEqual(result.data.matches.map((m) => [m.court, m.available]), [["1", true], ["7", false]]);
+});
+
+test("an entry cleared down to a blank court is skipped instead of failing the whole board", () => {
+  const result = mapScoreboard({ match: [{ court: "1", team1_fullname: "A" }, { court: "", team1_fullname_p1: "" }, {}] });
+  assert.ok(result.ok);
+  assert.deepEqual(result.data.matches.map((m) => m.court), ["1"]);
+});
+
+test("a feed whose match list was removed entirely shows an empty board", () => {
+  // Firebase drops keys whose value becomes empty, so clearing every court removes "match".
+  const result = mapScoreboard({ updatedAt: 1794309875128 });
+  assert.ok(result.ok);
+  assert.equal(result.data.matches.length, 0);
 });

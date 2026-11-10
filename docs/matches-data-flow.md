@@ -33,10 +33,14 @@ internal endpoint.
 
 ## Source contract and validation
 
-The configured node contains `{ match, updatedAt }`. `match` may be an array, a keyed object, or
-`null` (empty). Firebase sparse arrays may contain null holes; these are skipped. Present match
-entries must be objects with a usable numeric court identifier. Duplicate courts and malformed
-records fail validation rather than turning into empty success. A null root is a missing node.
+The configured node contains `{ match, updatedAt }`. `match` may be an array, a keyed object,
+`null`, or absent: when a match ends the scorer clears that court, and Firebase drops keys whose
+value becomes empty, so a fully cleared feed has no `match` key and shows an empty board. A court
+cleared down to just its number (e.g. `{ court: 7 }`) stays visible as a waiting court. Null holes
+and entries whose court number is blank or missing are skipped. Other entries must be objects with
+a usable numeric court identifier; duplicate courts and malformed records (e.g. `court: "abc"`)
+fail validation rather than turning into empty success. A null root is a missing node.
+`mapScoreboard()` applies these rules for both the Next.js server and the static build.
 
 The [mapper](../src/modules/scores/mappers/scores-mapper.ts) owns raw-to-canonical conversion:
 

@@ -57,3 +57,19 @@ export function categoryLabel(code: string): string {
 export function isSourceStale(updatedAt: string | null, now: number): boolean {
   return !updatedAt || now - Date.parse(updatedAt) > 120_000;
 }
+
+const EVENT_TITLE = "MilkLife Indonesia Junior International Series 2026";
+
+// Per-venue heading. Keyed by the venue name after the last "-" of the Firebase feed path
+// ("bdmntn-jati" -> "jati"), so prefix spellings such as "bdmtn-" still match.
+const venues: Record<string, { ageGroups: string[]; location: string | null }> = {
+  jati: { ageGroups: ["U17", "U15", "U13"], location: "GOR Djarum, Jati, Kudus, Jawa Tengah" },
+  kaliputu: { ageGroups: ["U19"], location: null },
+};
+
+export function venueHeading(feedPath: string): { title: string; subtitle: string | null } {
+  const segment = feedPath.split("/").filter(Boolean).at(-1) ?? "";
+  const venue = venues[segment.slice(segment.lastIndexOf("-") + 1).toLowerCase()];
+  if (!venue) return { title: EVENT_TITLE, subtitle: null };
+  return { title: `${EVENT_TITLE} (${venue.ageGroups.join(", ")})`, subtitle: venue.location };
+}

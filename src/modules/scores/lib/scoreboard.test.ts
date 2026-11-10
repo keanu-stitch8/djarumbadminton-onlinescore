@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { filterMatches, currentGame, isSourceStale, countryFlag, matchProgress } from "./scoreboard.ts";
+import { filterMatches, currentGame, isSourceStale, countryFlag, matchProgress, venueHeading } from "./scoreboard.ts";
 import { mapCourtMatch } from "../mappers/scores-mapper.ts";
 
 const first = mapCourtMatch({ court: 1, kelompok_pertandingan: "MS-U13", team1_fullname: "MIRZA", team1_club1: "INA", team1set1: "21", team2set1: "19", team1set2: "0", team1set3: "0" })!;
@@ -44,4 +44,22 @@ test("two valid game wins identify the winner, including the 30-point cap", () =
   assert.deepEqual(matchProgress(completed), { winner: 1, started: true });
   const capped = mapCourtMatch({ court: 2, team1set1: 30, team2set1: 29, team1set2: 22, team2set2: 20 })!;
   assert.deepEqual(matchProgress(capped), { winner: 0, started: true });
+});
+
+test("the Jati feed gets its age groups in the title and the venue as subtitle", () => {
+  assert.deepEqual(venueHeading("bdmntn-jati"), {
+    title: "MilkLife Indonesia Junior International Series 2026 (U17, U15, U13)",
+    subtitle: "GOR Djarum, Jati, Kudus, Jawa Tengah",
+  });
+  assert.deepEqual(venueHeading("/bdmntn-jati/"), venueHeading("bdmntn-jati"));
+});
+
+test("other feeds keep the plain event title without a subtitle", () => {
+  assert.deepEqual(venueHeading("bdmntn-other"), { title: "MilkLife Indonesia Junior International Series 2026", subtitle: null });
+});
+
+test("the Kaliputu feed gets U19 in the title, whichever prefix spelling the feed uses", () => {
+  for (const path of ["bdmntn-kaliputu", "bdmtn-kaliputu"]) {
+    assert.deepEqual(venueHeading(path), { title: "MilkLife Indonesia Junior International Series 2026 (U19)", subtitle: null });
+  }
 });

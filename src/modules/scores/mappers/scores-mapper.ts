@@ -1,4 +1,4 @@
-import type { CourtMatch, PlayerSide, Score } from "../types/scores.ts";
+import type { CourtMatch, PlayerSide, Score, ScoreboardData } from "../types/scores.ts";
 
 export function cleanText(value: unknown): string {
   return typeof value === "string" ? value.trim().replace(/\s+/g, " ") : "";
@@ -47,4 +47,33 @@ export function mapSourceTimestamp(value: unknown): string | null {
   const date = Number.isFinite(numeric)
     ? new Date(numeric < 1e12 ? numeric * 1000 : numeric) : new Date(String(value));
   return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+export type ScoreboardMapResult =
+  | { ok: true; data: Omit<ScoreboardData, "fetchedAt"> }
+  | { ok: false; code: "missing" | "invalid" };
+
+// Validates the whole feed root. Shared by the Next.js server and the static (browser-only) build.
+export function mapScoreboard(raw: unknown): ScoreboardMapResult {
+  if (raw === null || raw === undefined) return { ok: false, code: "missing" };
+  if (!isRecord(raw)) return { ok: false, code: "invalid" };
+  // Firebase drops keys whose value becomes empty: once every court is cleared, "match" disappears.
+  const list = raw.match ?? null;
+  if (list !== null && !Array.isArray(list) && !isRecord(list)) return { ok: false, code: "invalid" };
+  const matches: CourtMatch[] = [];
+  for (const record of list === null ? [] : Object.values(list)) {
+    if (record === null) continue;
+    // A court cleared after its match ends can lose its court number too; skip it, don't fail the board.
+    if (isRecord(record) && cleanText(String(record.court ?? "")) === "") continue;
+    const match = isRecord(record) ? mapCourtMatch(record) : null;
+    if (!match) return { ok: false, code: "invalid" };
+    matches.push(match);
+  }
+  if (new Set(matches.map((m) => m.id)).size !== matches.length) return { ok: false, code: "invalid" };
+  matches.sort((a, b) => Number(a.court) - Number(b.court));
+  return { ok: true, data: { matches, sourceUpdatedAt: mapSourceTimestamp(raw.updatedAt) } };
 }
