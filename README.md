@@ -3,8 +3,8 @@
 Mobile-first badminton scoreboard for MilkLife Indonesia Junior International Series 2026.
 
 Next.js 16 App Router, React 19, TypeScript, Tailwind CSS 4, shadcn/ui components backed by Radix,
-and TanStack Query. Node **24.22.2** is pinned in `.nvmrc` and `.node-version` (latest Node 24
-release verified against the official distribution on 10 November 2026).
+and TanStack Query. Node **24.17.0** is pinned in `.nvmrc` and `.node-version` to match the build server
+(`package.json` accepts any Node 24 from 24.17.0).
 
 ## Run locally
 
