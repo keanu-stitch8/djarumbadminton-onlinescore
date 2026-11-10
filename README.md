@@ -4,7 +4,7 @@ Mobile-first badminton scoreboard for MilkLife Indonesia Junior International Se
 
 Next.js 16 App Router, React 19, TypeScript, Tailwind CSS 4, shadcn/ui components backed by Radix,
 and TanStack Query. Node **24.17.0** is pinned in `.nvmrc` and `.node-version` to match the build server
-(`package.json` accepts any Node 24 from 24.17.0).
+(`package.json` accepts Node 24.17.0 and later, up to Node 26; the Docker runtime uses Node 26).
 
 ## Run locally
 
