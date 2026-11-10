@@ -23,7 +23,7 @@ no dependency on the original downloaded key file. Never put credentials in `pub
 npm run dev
 ```
 
-Open `http://localhost:3006` for the responsive scoreboard. The home page uses the full scoreboard
+Open `http://localhost:2906` for the responsive scoreboard. The home page uses the full scoreboard
 layout and shows every court together, without pagination or automatic rotation. `/display`
 redirects to `/`. Every court is shown with no filters or search controls. The main heading uses
 the full event name from the supplied reference logo, rather than a Firebase field or an
@@ -120,7 +120,7 @@ Standard Next.js deploy (Node.js 24):
 ```sh
 npm ci
 npm run build
-npm start          # port 3006; set PORT to change it, e.g. PORT=2906 npm start
+npm start          # port 2906 (same as production); set PORT to change it
 ```
 
 If a reverse proxy serves the app under a sub-path such as `/mlijis-2026/venue2` (proxy forwarding
