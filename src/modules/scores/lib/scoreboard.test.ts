@@ -56,7 +56,7 @@ test("two valid game wins identify the winner, including the 30-point cap", () =
 test("the Jati feed gets its age groups in the title and the venue as subtitle", () => {
   assert.deepEqual(venueHeading("bdmntn-jati"), {
     title: "MilkLife Indonesia Junior International Series 2026 (U17, U15, U13)",
-    subtitle: "GOR Djarum, Jati, Kudus, Central Java, Indonesia",
+    subtitle: "GOR Djarum, Jati, Kudus, Indonesia",
   });
   assert.deepEqual(venueHeading("/bdmntn-jati/"), venueHeading("bdmntn-jati"));
 });
