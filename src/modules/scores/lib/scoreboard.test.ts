@@ -64,7 +64,7 @@ test("the Kaliputu feed gets U19 in the title, whichever prefix spelling the fee
   }
 });
 
-test("Chinese Taipei never shows the ROC flag; it keeps its name with a neutral placeholder", () => {
-  assert.deepEqual(countryFlag("TPE"), { flag: "", name: "Chinese Taipei" });
-  assert.deepEqual(countryFlag("tpe"), { flag: "", name: "Chinese Taipei" });
+test("Chinese Taipei uses its local Olympic flag, never the ROC flag from flagcdn", () => {
+  assert.deepEqual(countryFlag("TPE"), { flag: "/flags/tpe.png", name: "Chinese Taipei" });
+  assert.deepEqual(countryFlag("tpe"), { flag: "/flags/tpe.png", name: "Chinese Taipei" });
 });

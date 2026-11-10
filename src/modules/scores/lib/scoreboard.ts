@@ -16,9 +16,11 @@ export function currentGame(match: CourtMatch): number {
   return 0;
 }
 
-// [ISO code for flagcdn, display name]. An empty ISO code shows the neutral placeholder.
-// Chinese Taipei competes under the Chinese Taipei Olympic flag, not the ROC flag that flagcdn
-// serves for "TW"; until that emblem is added as a local asset, it gets no flag image.
+// Flags served from public/flags instead of flagcdn. Chinese Taipei competes under the Chinese
+// Taipei Olympic flag, not the ROC flag flagcdn serves for "TW".
+const localFlags: Record<string, string> = { INA: "/flags/id.svg", IDN: "/flags/id.svg", TPE: "/flags/tpe.png" };
+
+// [ISO code for flagcdn, display name]. An empty ISO code means the flag is local-only.
 const countries: Record<string, [string, string]> = {
   INA: ["ID", "Indonesia"], IDN: ["ID", "Indonesia"], TPE: ["", "Chinese Taipei"],
   CHN: ["CN", "China"], MAS: ["MY", "Malaysia"], THA: ["TH", "Thailand"],
@@ -29,11 +31,12 @@ const countries: Record<string, [string, string]> = {
 };
 
 export function countryFlag(code: string): { flag: string; name: string } {
-  const country = countries[code.toUpperCase()];
+  const key = code.toUpperCase();
+  const country = countries[key];
   if (!country) return { flag: "", name: code };
-  if (!country[0]) return { flag: "", name: country[1] };
-  const iso = country[0].toLowerCase();
-  return { flag: iso === "id" ? "/flags/id.svg" : `https://flagcdn.com/${iso}.svg`, name: country[1] };
+  const local = localFlags[key];
+  if (local) return { flag: local, name: country[1] };
+  return { flag: country[0] ? `https://flagcdn.com/${country[0].toLowerCase()}.svg` : "", name: country[1] };
 }
 
 // The feed has no match-status field. Two valid game wins establish a best-of-three winner.
