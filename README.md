@@ -113,22 +113,17 @@ Limits: this only works while the database allows public reads (a static site ca
 credentials), and each open page holds one Firebase connection, so the Firebase plan's
 simultaneous-connection limit applies (100 on the free Spark plan).
 
-## Deploy (Next.js server, no build on the server)
+## Deploy
 
-Every push to `main` runs `.github/workflows/build.yml`: tests, typecheck, a standalone
-`next build` on Linux x64, and publishes `onlinescore-standalone.tar.gz` as the rolling `latest`
-GitHub release. The build uses `BASE_PATH` (default `/mlijis-2026/venue2`, override with the
-`BASE_PATH` repository variable) because the app is served under that path behind a reverse proxy.
-
-On the server (Linux x64, glibc 2.28+, Node.js 24):
+Standard Next.js deploy (Node.js 24):
 
 ```sh
-curl -fsSLO https://raw.githubusercontent.com/keanu-stitch8/djarumbadminton-onlinescore/main/scripts/deploy-server.sh
-APP_DIR=$HOME/onlinescore bash deploy-server.sh            # first deploy / every update
-cd $HOME/onlinescore && PORT=3006 HOSTNAME=0.0.0.0 pm2 start server.js --name onlinescore-venue2
-pm2 reload onlinescore-venue2                               # after later deploys
+npm ci
+npm run build
+npm start          # port 3006
 ```
 
-The script unpacks the build next to the live folder and swaps it in, keeping one backup in
-`$APP_DIR.prev` for rollback. The reverse proxy must forward the path unchanged, e.g. nginx
-`location /mlijis-2026/venue2 { proxy_pass http://<server>:3006; }` with no URI after the port.
+If a reverse proxy serves the app under a sub-path such as `/mlijis-2026/venue2` (proxy forwarding
+the path unchanged), set the same `BASE_PATH` for both commands, e.g.
+`BASE_PATH=/mlijis-2026/venue2 npm run build` and `BASE_PATH=/mlijis-2026/venue2 npm start`.
+Unset, the app is served at the root.

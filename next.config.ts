@@ -1,12 +1,11 @@
 import type { NextConfig } from "next";
 import { normalizeBasePath } from "./src/lib/base-path";
 
-// Sub-path when served behind a reverse proxy, e.g. BASE_PATH=/mlijis-2026/venue2. Fixed at build time.
+// Optional sub-path when served behind a reverse proxy (env BASE_PATH, e.g. /mlijis-2026/venue2).
+// Unset = served at the root. Must be the same for `next build` and `next start`.
 const basePath = normalizeBasePath(process.env.BASE_PATH);
 
 const config: NextConfig = {
-  // Self-contained build (server.js + minimal node_modules) so the server never runs npm or next build.
-  output: "standalone",
   basePath,
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
   poweredByHeader: false,
