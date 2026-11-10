@@ -13,58 +13,6 @@
     }
   },
   {
-    "id": "bwf",
-    "name": "BWF",
-    "file": "/logos/bwf.png",
-    "width": 86,
-    "height": 71,
-    "crop": {
-      "left": 1003,
-      "top": 48,
-      "width": 86,
-      "height": 71
-    }
-  },
-  {
-    "id": "badminton-asia",
-    "name": "Badminton Asia",
-    "file": "/logos/badminton-asia.png",
-    "width": 132,
-    "height": 63,
-    "crop": {
-      "left": 1099,
-      "top": 55,
-      "width": 132,
-      "height": 63
-    }
-  },
-  {
-    "id": "pbsi",
-    "name": "PBSI",
-    "file": "/logos/pbsi.png",
-    "width": 70,
-    "height": 76,
-    "crop": {
-      "left": 1237,
-      "top": 48,
-      "width": 70,
-      "height": 76
-    }
-  },
-  {
-    "id": "djarum-foundation",
-    "name": "Bakti Olahraga Djarum Foundation",
-    "file": "/logos/djarum-foundation.png",
-    "width": 237,
-    "height": 64,
-    "crop": {
-      "left": 1316,
-      "top": 53,
-      "width": 237,
-      "height": 64
-    }
-  },
-  {
     "id": "5-days-croissant",
     "name": "5 Days Croissant",
     "file": "/logos/5-days-croissant.png",
@@ -180,5 +128,37 @@
       "width": 143,
       "height": 40
     }
+  },
+  {
+    "id": "bwf",
+    "name": "BWF",
+    "file": "/logos/bwf.svg",
+    "width": 180,
+    "height": 145,
+    "supplied": true
+  },
+  {
+    "id": "badminton-asia",
+    "name": "Badminton Asia",
+    "file": "/logos/badminton-asia.png",
+    "width": 169,
+    "height": 70,
+    "supplied": true
+  },
+  {
+    "id": "pbsi",
+    "name": "PBSI",
+    "file": "/logos/pbsi.png",
+    "width": 234,
+    "height": 256,
+    "supplied": true
+  },
+  {
+    "id": "djarum-foundation",
+    "name": "Bakti Olahraga Djarum Foundation",
+    "file": "/logos/djarum-foundation.png",
+    "width": 467,
+    "height": 91,
+    "supplied": true
   }
 ]

@@ -8,10 +8,6 @@ const directory = resolve("public/logos");
 await mkdir(directory, { recursive: true });
 const logos = [
   ["milklife-ijis-2026", "MilkLife Indonesia Junior International Series 2026", 39, 16, 183, 144, "white"],
-  ["bwf", "BWF", 1003, 48, 86, 71, "white"],
-  ["badminton-asia", "Badminton Asia", 1099, 55, 132, 63, "white"],
-  ["pbsi", "PBSI", 1237, 48, 70, 76, "white"],
-  ["djarum-foundation", "Bakti Olahraga Djarum Foundation", 1316, 53, 237, 64, "white"],
   ["5-days-croissant", "5 Days Croissant", 285, 838, 134, 53, "black"],
   ["blibli", "Blibli", 432, 837, 120, 50, "black"],
   ["caffino", "Caffino", 562, 841, 90, 47, "black"],
@@ -22,6 +18,8 @@ const logos = [
   ["sariwangi", "SariWangi", 1077, 837, 112, 54, "black"],
   ["victor", "Victor", 1206, 846, 143, 40, "black"],
 ];
+// Supplied as separate sharp exports instead of being cropped from the reference; never overwritten.
+const supplied = [["bwf", "BWF", "bwf.svg"], ["badminton-asia", "Badminton Asia", "badminton-asia.png"], ["pbsi", "PBSI", "pbsi.png"], ["djarum-foundation", "Bakti Olahraga Djarum Foundation", "djarum-foundation.png"]];
 const metadata = await sharp(source).metadata();
 if (metadata.width !== 1600 || metadata.height !== 900) throw new Error("Expected the original 1600 × 900 reference image.");
 const manifest = [];
@@ -49,6 +47,10 @@ for (const [id, name, left, top, width, height, background] of logos) {
   }
   await sharp(data, { raw: info }).png().toFile(`${directory}/${id}.png`);
   manifest.push({ id, name, file: `/logos/${id}.png`, width, height, crop: { left, top, width, height } });
+}
+for (const [id, name, file] of supplied) {
+  const { width, height } = await sharp(`${directory}/${file}`).metadata();
+  manifest.push({ id, name, file: `/logos/${file}`, width, height, supplied: true });
 }
 await writeFile(`${directory}/manifest.json`, JSON.stringify(manifest, null, 2) + "\n");
 console.log(`Extracted ${manifest.length} separate transparent logo PNGs.`);

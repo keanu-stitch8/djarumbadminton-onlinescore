@@ -59,13 +59,21 @@ separate from a personal Google login. Browser requests use `/api/scores`; crede
   `srikandi-merdeka-cup` repository.
 - [Scoreboard data flow](docs/matches-data-flow.md): source contract, layer ownership, trust
   boundary, freshness, errors and consumers in this app.
+- Styling: components use inline Tailwind utility classes. `src/app/globals.css` only holds the
+  theme tokens, base element styles and the `page-width` container utility. Only the default
+  Tailwind breakpoints are used: `sm` (640px) for tablets and `lg` (1024px) for the wide court layout. Pieces shared by the Next.js and
+  static boards live in `src/modules/scores/components/board-parts.tsx`.
 
 ## Logo assets
 
 Fourteen separate transparent PNGs are in [public/logos](public/logos), including the event logo,
-four organization logos and nine sponsors. They are cropped from the supplied 1600 × 900 reference;
-small text retains the source image's original resolution. Crop bounds are in
-[manifest.json](public/logos/manifest.json).
+four organization logos and nine sponsors. Most are cropped from the supplied 1600 × 900 reference;
+small text retains the source image's original resolution. The four organization logos are
+separate higher-resolution files (`"supplied": true` in the manifest) that the script below keeps
+as is: the BWF vector logo (`bwf.svg`, from Wikimedia Commons), Badminton Asia (from Indonesian
+Wikipedia, trimmed to 169 × 70; the only size published there), the PBSI crest (from pbsi.id,
+trimmed and resized to 234 × 256) and a 467 × 91 Djarum Foundation export.
+Crop bounds are in [manifest.json](public/logos/manifest.json).
 
 Regenerate from the original image:
 
