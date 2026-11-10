@@ -6,9 +6,9 @@
     "node": ">=24.17.0 <25"
   },
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0 --port 3006",
+    "dev": "next dev --hostname 0.0.0.0 --port ${PORT:-3006}",
     "build": "next build",
-    "start": "next start --hostname 0.0.0.0 --port 3006",
+    "start": "next start --hostname 0.0.0.0 --port ${PORT:-3006}",
     "static:dev": "vite --config static/vite.config.mts",
     "static:build": "vite build --config static/vite.config.mts",
     "static:preview": "vite preview --config static/vite.config.mts",

@@ -120,7 +120,7 @@ Standard Next.js deploy (Node.js 24):
 ```sh
 npm ci
 npm run build
-npm start          # port 3006
+npm start          # port 3006; set PORT to change it, e.g. PORT=2906 npm start
 ```
 
 If a reverse proxy serves the app under a sub-path such as `/mlijis-2026/venue2` (proxy forwarding
