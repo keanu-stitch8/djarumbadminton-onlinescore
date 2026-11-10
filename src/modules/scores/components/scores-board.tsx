@@ -6,6 +6,7 @@ import { AlertCircle, Clock3, RefreshCw, Signal, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
+import { withBasePath } from "@/lib/base-path";
 import { isSourceStale } from "../lib/scoreboard";
 import type { ScoreboardData, ScoreboardResult } from "../types/scores";
 import { MatchCard } from "./match-card";
@@ -15,7 +16,7 @@ import { ScoreboardTitle } from "./scoreboard-title";
 async function fetchScores(): Promise<ScoreboardData> {
   let response: Response;
   try {
-    response = await fetch("/api/scores", { cache: "no-store", signal: AbortSignal.timeout(15_000) });
+    response = await fetch(withBasePath("/api/scores"), { cache: "no-store", signal: AbortSignal.timeout(15_000) });
   } catch {
     throw new Error("Koneksi ke server skor terputus atau melewati batas waktu. Aplikasi akan mencoba kembali otomatis.");
   }

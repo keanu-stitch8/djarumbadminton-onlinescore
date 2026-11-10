@@ -2,6 +2,7 @@ import Image from "next/image";
 import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { withBasePath } from "@/lib/base-path";
 import { categoryLabel, countryFlag, currentGame, matchProgress } from "../lib/scoreboard";
 import type { CourtMatch } from "../types/scores";
 
@@ -19,7 +20,7 @@ export function MatchCard({ match, animateIndicator = true }: { match: CourtMatc
         const showIndicator = match.available && (winner || (progress.winner === null && side.serving));
         const indicatorLabel = winner ? "Pemenang pertandingan" : "Pemegang servis";
         return <div className="player-row" role="row" key={index}>
-          <div className="player-cell" role="cell"><div className="player-country">{flag.flag ? <Image src={flag.flag} alt={flag.name} width={32} height={24} className="country-flag border border-gray-200" unoptimized /> : <span className="country-flag country-flag-placeholder border border-gray-200" aria-hidden="true" />}<span>{side.country || "—"}</span></div><div className="player-name">{side.players.length ? side.players.map((p, i) => <span key={i}>{p}</span>) : <span className="waiting-player">{match.available ? "Menunggu pemain" : "Belum ada pertandingan"}</span>}</div>{showIndicator && <span className={cn("ml-auto inline-flex size-4 shrink-0 items-center justify-center", ongoing && animateIndicator && "animate-pulse motion-reduce:animate-none")} role="img" aria-label={indicatorLabel} title={indicatorLabel}><span className={cn("size-2.5 rounded-full", winner || ongoing ? "bg-emerald-500" : "bg-slate-400")} /></span>}</div>
+          <div className="player-cell" role="cell"><div className="player-country">{flag.flag ? <Image src={withBasePath(flag.flag)} alt={flag.name} width={32} height={24} className="country-flag border border-gray-200" unoptimized /> : <span className="country-flag country-flag-placeholder border border-gray-200" aria-hidden="true" />}<span>{side.country || "—"}</span></div><div className="player-name">{side.players.length ? side.players.map((p, i) => <span key={i}>{p}</span>) : <span className="waiting-player">{match.available ? "Menunggu pemain" : "Belum ada pertandingan"}</span>}</div>{showIndicator && <span className={cn("ml-auto inline-flex size-4 shrink-0 items-center justify-center", ongoing && animateIndicator && "animate-pulse motion-reduce:animate-none")} role="img" aria-label={indicatorLabel} title={indicatorLabel}><span className={cn("size-2.5 rounded-full", winner || ongoing ? "bg-emerald-500" : "bg-slate-400")} /></span>}</div>
           {side.scores.map((score, game) => <div key={game} role="cell" aria-label={`Gim ${game + 1}: ${match.available && score !== null ? score : "belum ada skor"}`} className={cn("score-cell", game === activeGame && match.available && "score-current")}>{match.available && score !== null ? score : "—"}</div>)}
         </div>;
       })}

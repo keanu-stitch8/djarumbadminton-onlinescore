@@ -13,7 +13,7 @@
     "static:build": "vite build --config static/vite.config.mts",
     "static:preview": "vite preview --config static/vite.config.mts",
     "typecheck": "tsc --noEmit",
-    "test": "node --conditions=react-server --experimental-strip-types --test src/modules/scores/mappers/scores-mapper.test.ts src/modules/scores/lib/scoreboard.test.ts src/lib/server/http-client.test.ts src/lib/server/ttl-cache.test.ts static/src/firebase-stream.test.ts",
+    "test": "node --conditions=react-server --experimental-strip-types --test src/modules/scores/mappers/scores-mapper.test.ts src/modules/scores/lib/scoreboard.test.ts src/lib/server/http-client.test.ts src/lib/server/ttl-cache.test.ts src/lib/base-path.test.ts static/src/firebase-stream.test.ts",
     "check:docs": "node scripts/check-docs.mjs",
     "assets:logos": "node scripts/cut-logos.mjs"
   },

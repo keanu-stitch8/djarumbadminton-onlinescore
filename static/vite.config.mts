@@ -13,11 +13,13 @@ export default defineConfig({
   publicDir: here("../public"),
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: {
-      "@": here("../src"),
-      "next/image": here("./src/shims/next-image.tsx"),
-      "next/link": here("./src/shims/next-link.tsx"),
-    },
+    // Order matters: the specific "@/lib/base-path" swap must come before the generic "@" alias.
+    alias: [
+      { find: "@/lib/base-path", replacement: here("./src/shims/base-path.ts") },
+      { find: "@", replacement: here("../src") },
+      { find: "next/image", replacement: here("./src/shims/next-image.tsx") },
+      { find: "next/link", replacement: here("./src/shims/next-link.tsx") },
+    ],
   },
   build: { outDir: here("dist"), emptyOutDir: true },
   server: { port: 3007, host: "0.0.0.0" },

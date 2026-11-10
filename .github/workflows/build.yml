@@ -1,0 +1,55 @@
+name: Build release
+
+# Builds the standalone app on Linux and publishes it as the single rolling "latest" release,
+# so the production server only downloads and extracts it (no npm install, no next build there).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-release
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build
+        env:
+          # Sub-path the reverse proxy serves the app under. Override with the BASE_PATH repository
+          # variable (Settings > Secrets and variables > Actions); "/" serves it at the root.
+          BASE_PATH: ${{ vars.BASE_PATH || '/mlijis-2026/venue2' }}
+
+      - name: Package standalone build
+        run: |
+          mkdir dist
+          cp -R .next/standalone/. dist/
+          mkdir -p dist/.next
+          cp -R .next/static dist/.next/static
+          cp -R public dist/public
+          echo "$GITHUB_SHA" > dist/REVISION
+          tar -czf onlinescore-standalone.tar.gz -C dist .
+
+      - name: Publish rolling "latest" release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --cleanup-tag --yes || true
+          gh release create latest onlinescore-standalone.tar.gz \
+            --target "$GITHUB_SHA" \
+            --title "Latest build" \
+            --notes "Built from ${GITHUB_SHA::7}. Deploy with scripts/deploy-server.sh."
