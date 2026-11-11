@@ -28,8 +28,12 @@ layout and shows every court together, without pagination or automatic rotation.
 redirects to `/`. Every court is shown with no filters or search controls. The main heading uses
 the full event name from the supplied reference logo, rather than a Firebase field or an
 abbreviation. Data refreshes every two seconds while visible, and stale source data is labeled.
-Country flags have a 4:3 ratio with the country code underneath.
-Indonesia's flag is local; other supported country icons use FlagCDN SVGs.
+Country flags have a 4:3 ratio and no code label; a country without a flag shows its code
+in the placeholder.
+Flags for the participating countries (Indonesia, Malaysia, Philippines, Singapore, Austria,
+France, United States) are local 4:3 SVGs from [flag-icons](https://flagicons.lipis.dev) (MIT,
+license in `public/flags/LICENSE-flag-icons.txt`). Chinese Taipei uses its own Olympic flag
+(`tpe.png`); any other known country falls back to FlagCDN.
 
 Firebase connection/socket errors show a red alert while preserving the last score and retrying
 automatically. The development server allows HMR from `103.6.207.2` as well as localhost. If that
@@ -61,8 +65,8 @@ separate from a personal Google login. Browser requests use `/api/scores`; crede
   boundary, freshness, errors and consumers in this app.
 - Styling: components use inline Tailwind utility classes. `src/app/globals.css` only holds the
   theme tokens, base element styles and the `page-width` container utility. Only the default
-  Tailwind breakpoints are used: `sm` (640px) for tablets and `lg` (1024px) for the wide court layout. Pieces shared by the Next.js and
-  static boards live in `src/modules/scores/components/board-parts.tsx`.
+  Tailwind breakpoints are used: `sm` (640px) for tablets and `lg` (1024px) for the wide court layout. Board building blocks (toolbar,
+  alerts, footer) live in `src/modules/scores/components/board-parts.tsx`.
 
 ## Logo assets
 
@@ -94,32 +98,12 @@ npm start
 If a constrained environment disallows the local sockets used internally by Turbopack, use
 `npm run build -- --webpack`. This builds the same Next.js app without Turbopack's worker sockets.
 
-## Static version (no Node.js on the server)
-
-`static/` builds the same live score page as plain HTML/JS/CSS for servers that cannot run a
-modern Node.js (e.g. CentOS 6). It reuses the shared components, Tailwind CSS and score logic
-from `src/`, but reads Firebase directly in the browser through the Realtime Database REST
-streaming API (Server-Sent Events) instead of polling `/api/scores`.
-
-```sh
-npm run static:dev      # http://localhost:3007
-npm run static:build    # output: static/dist/
-npm run static:preview  # serve static/dist on http://localhost:3008
-```
-
-Build on your machine and commit `static/dist/` (it is tracked on purpose, so the server only
-needs `git pull`), then copy its contents to any folder served by the web server; asset paths are relative, so a subfolder such as `/onlinescore/` works. Override the source
-at build time with `VITE_FIREBASE_DATABASE_URL` / `VITE_FIREBASE_DATABASE_PATH`.
+## Venues
 
 The page title and subtitle follow the feed's venue (`venueHeading()` in
 `src/modules/scores/lib/scoreboard.ts`): `…-jati` adds "(U17, U15, U13)" and the GOR Djarum Jati
-location, `…-kaliputu` adds "(U19)". Each venue therefore needs its own build, for example
-`VITE_FIREBASE_DATABASE_PATH=bdmntn-kaliputu npm run static:build`. The Next.js app uses
-`FIREBASE_DATABASE_PATH` the same way.
-
-Limits: this only works while the database allows public reads (a static site cannot hold
-credentials), and each open page holds one Firebase connection, so the Firebase plan's
-simultaneous-connection limit applies (100 on the free Spark plan).
+location, `…-kaliputu` adds "(U19)". Each venue runs its own instance with its own
+`FIREBASE_DATABASE_PATH`, for example `FIREBASE_DATABASE_PATH=bdmntn-kaliputu`.
 
 ## Deploy
 

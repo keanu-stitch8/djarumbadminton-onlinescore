@@ -71,6 +71,12 @@ test("the Kaliputu feed gets U19 in the title, whichever prefix spelling the fee
   }
 });
 
+test("participating countries use the local flag-icons SVGs", () => {
+  for (const [code, file, name] of [["MAS", "my", "Malaysia"], ["PHI", "ph", "Filipina"], ["SGP", "sg", "Singapura"], ["AUT", "at", "Austria"], ["FRA", "fr", "Prancis"], ["USA", "us", "Amerika Serikat"]]) {
+    assert.deepEqual(countryFlag(code), { flag: `/flags/${file}.svg`, name });
+  }
+});
+
 test("Chinese Taipei uses its local Olympic flag, never the ROC flag from flagcdn", () => {
   assert.deepEqual(countryFlag("TPE"), { flag: "/flags/tpe.png", name: "Chinese Taipei" });
   assert.deepEqual(countryFlag("tpe"), { flag: "/flags/tpe.png", name: "Chinese Taipei" });

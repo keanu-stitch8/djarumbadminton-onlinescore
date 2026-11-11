@@ -57,7 +57,7 @@ export type ScoreboardMapResult =
   | { ok: true; data: Omit<ScoreboardData, "fetchedAt"> }
   | { ok: false; code: "missing" | "invalid" };
 
-// Validates the whole feed root. Shared by the Next.js server and the static (browser-only) build.
+// Validates the whole feed root.
 export function mapScoreboard(raw: unknown): ScoreboardMapResult {
   if (raw === null || raw === undefined) return { ok: false, code: "missing" };
   if (!isRecord(raw)) return { ok: false, code: "invalid" };

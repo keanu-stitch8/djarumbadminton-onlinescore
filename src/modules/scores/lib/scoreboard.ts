@@ -16,9 +16,14 @@ export function currentGame(match: CourtMatch): number {
   return 0;
 }
 
-// Flags served from public/flags instead of flagcdn. Chinese Taipei competes under the Chinese
-// Taipei Olympic flag, not the ROC flag flagcdn serves for "TW".
-const localFlags: Record<string, string> = { INA: "/flags/id.svg", IDN: "/flags/id.svg", TPE: "/flags/tpe.png" };
+// Flags served from public/flags instead of flagcdn: the 4:3 SVGs from flag-icons
+// (https://flagicons.lipis.dev, MIT) for the participating countries. Chinese Taipei competes under
+// the Chinese Taipei Olympic flag, not the ROC flag flag packs serve for "TW", so it keeps its own file.
+const localFlags: Record<string, string> = {
+  INA: "/flags/id.svg", IDN: "/flags/id.svg", MAS: "/flags/my.svg", PHI: "/flags/ph.svg",
+  SGP: "/flags/sg.svg", TPE: "/flags/tpe.png", AUT: "/flags/at.svg", FRA: "/flags/fr.svg",
+  USA: "/flags/us.svg",
+};
 
 // [ISO code for flagcdn, display name]. An empty ISO code means the flag is local-only.
 const countries: Record<string, [string, string]> = {
@@ -28,6 +33,7 @@ const countries: Record<string, [string, string]> = {
   SGP: ["SG", "Singapura"], VIE: ["VN", "Vietnam"], HKG: ["HK", "Hong Kong"],
   AUS: ["AU", "Australia"], ENG: ["GB", "Inggris"], DEN: ["DK", "Denmark"],
   PHI: ["PH", "Filipina"], USA: ["US", "Amerika Serikat"], CAN: ["CA", "Kanada"],
+  AUT: ["AT", "Austria"], FRA: ["FR", "Prancis"],
 };
 
 export function countryFlag(code: string): { flag: string; name: string } {

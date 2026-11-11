@@ -40,7 +40,7 @@ cleared down to just its number (e.g. `{ court: 7 }`) maps to a waiting court (`
 and entries whose court number is blank or missing are skipped. Other entries must be objects with
 a usable numeric court identifier; duplicate courts and malformed records (e.g. `court: "abc"`)
 fail validation rather than turning into empty success. A null root is a missing node.
-`mapScoreboard()` applies these rules for both the Next.js server and the static build.
+`mapScoreboard()` applies these rules on the server.
 
 The [mapper](../src/modules/scores/mappers/scores-mapper.ts) owns raw-to-canonical conversion:
 

@@ -6,8 +6,8 @@ import { StatePanel } from "@/components/state-panel";
 import { cn } from "@/lib/utils";
 import { ScoreboardTitle } from "./scoreboard-title";
 
-// Building blocks shared by the Next.js board (polling) and the static board (Firebase stream).
-// Each board owns its data source and decides which of these to render.
+// Building blocks of the scores board. ScoresBoard owns the data source and decides which of these
+// to render.
 
 // One column on phones, two from 640px, one wide court per row from 1024px (lg).
 export const courtGridClass = "grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-[18px] lg:grid-cols-1 lg:gap-3.5";
