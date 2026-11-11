@@ -68,6 +68,13 @@ treated as ongoing for its indicator. A winner gets a static green circle; an on
 player gets a green Tailwind `animate-pulse` circle. Waiting courts do not pulse. Stale data,
 offline state and refresh errors disable the pulse to avoid implying a fresh live feed.
 
+Game and match point are derived from the scores too (`pointStatus()`), not taken from the feed's
+`info_match` text, which operators set by hand and often leave behind after the game ends. In the
+active, unfinished game a side holds game point at 20 or more while ahead, or at 29 (29-all gives
+both sides one); it is match point when that side has already won a game. The badge sits on that
+side's row. A feed message naming game or match point is dropped (`footerMessage()`); any other
+message still shows in the card footer.
+
 ## Freshness and errors
 
 Live scores use a short in-memory service cache instead of `'use cache'`. `getScoreboardData()`

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { filterMatches, currentGame, isBoardIdle, isSourceStale, countryFlag, matchProgress, venueHeading } from "./scoreboard.ts";
+import { filterMatches, currentGame, isBoardIdle, isSourceStale, countryFlag, matchProgress, venueHeading, pointStatus, footerMessage } from "./scoreboard.ts";
 import { mapCourtMatch } from "../mappers/scores-mapper.ts";
 
 const first = mapCourtMatch({ court: 1, kelompok_pertandingan: "MS-U13", team1_fullname: "MIRZA", team1_club1: "INA", team1set1: "21", team2set1: "19", team1set2: "0", team1set3: "0" })!;
@@ -80,4 +80,32 @@ test("participating countries use the local flag-icons SVGs", () => {
 test("Chinese Taipei uses its local Olympic flag, never the ROC flag from flagcdn", () => {
   assert.deepEqual(countryFlag("TPE"), { flag: "/flags/tpe.png", name: "Chinese Taipei" });
   assert.deepEqual(countryFlag("tpe"), { flag: "/flags/tpe.png", name: "Chinese Taipei" });
+});
+
+test("game point goes to the side one rally from winning the active game, never after it ends", () => {
+  const point = (raw: Record<string, unknown>) => pointStatus(mapCourtMatch({ court: 1, ...raw })!);
+  assert.deepEqual(point({ team1set1: 20, team2set1: 14 }), ["game", null]);
+  assert.deepEqual(point({ team1set1: 18, team2set1: 20 }), [null, "game"]);
+  assert.deepEqual(point({ team1set1: 19, team2set1: 19 }), [null, null]);
+  assert.deepEqual(point({ team1set1: 20, team2set1: 20 }), [null, null]);
+  assert.deepEqual(point({ team1set1: 24, team2set1: 23 }), ["game", null]);
+  assert.deepEqual(point({ team1set1: 29, team2set1: 29 }), ["game", "game"]);
+  // Finished games (the screenshot's lingering "Game Point" cases): 21-14 and 17-21, next game 0-0.
+  assert.deepEqual(point({ team1set1: 19, team2set1: 21, team1set2: 21, team2set2: 14, team1set3: 0, team2set3: 0 }), [null, null]);
+  assert.deepEqual(point({ team1set1: 17, team2set1: 21, team1set2: 0, team2set2: 0 }), [null, null]);
+});
+
+test("game point becomes match point for a side that already won a game", () => {
+  const point = (raw: Record<string, unknown>) => pointStatus(mapCourtMatch({ court: 1, ...raw })!);
+  assert.deepEqual(point({ team1set1: 21, team2set1: 15, team1set2: 20, team2set2: 10 }), ["match", null]);
+  assert.deepEqual(point({ team1set1: 21, team2set1: 15, team1set2: 10, team2set2: 20 }), [null, "game"]);
+  assert.deepEqual(point({ team1set1: 21, team2set1: 15, team1set2: 15, team2set2: 21, team1set3: 20, team2set3: 20 }), [null, null]);
+  assert.deepEqual(point({ team1set1: 21, team2set1: 15, team1set2: 15, team2set2: 21, team1set3: 21, team2set3: 20 }), ["match", null]);
+  assert.deepEqual(point({ team1set1: 21, team2set1: 15, team1set2: 21, team2set2: 19 }), [null, null]);
+});
+
+test("the footer drops feed game/match point text but keeps other messages", () => {
+  assert.equal(footerMessage("Game Point"), "");
+  assert.equal(footerMessage("MATCH POINT"), "");
+  assert.equal(footerMessage("Interval"), "Interval");
 });

@@ -45,20 +45,55 @@ export function countryFlag(code: string): { flag: string; name: string } {
   return { flag: country[0] ? `https://flagcdn.com/${country[0].toLowerCase()}.svg` : "", name: country[1] };
 }
 
+// A badminton game is won at 21 with a two-point margin, or at the 30-point cap.
+function gameWinner(a: number | null, b: number | null): 0 | 1 | null {
+  if (a === null || b === null) return null;
+  if (a > b && ((a >= 21 && a - b >= 2) || a === 30)) return 0;
+  if (b > a && ((b >= 21 && b - a >= 2) || b === 30)) return 1;
+  return null;
+}
+
 // The feed has no match-status field. Two valid game wins establish a best-of-three winner.
 export function matchProgress(match: CourtMatch): { winner: 0 | 1 | null; started: boolean } {
   const wins = [0, 0];
   for (let game = 0; game < 3; game++) {
-    const a = match.sides[0].scores[game];
-    const b = match.sides[1].scores[game];
-    if (a === null || b === null) continue;
-    if (a > b && ((a >= 21 && a - b >= 2) || a === 30)) wins[0]++;
-    if (b > a && ((b >= 21 && b - a >= 2) || b === 30)) wins[1]++;
+    const winner = gameWinner(match.sides[0].scores[game], match.sides[1].scores[game]);
+    if (winner !== null) wins[winner]++;
   }
   return {
     winner: wins[0] >= 2 ? 0 : wins[1] >= 2 ? 1 : null,
     started: match.sides.some((side) => side.scores.some((score) => (score ?? 0) > 0)),
   };
+}
+
+export type PointStatus = "game" | "match" | null;
+
+// Derived from the scores, not from the feed's info_match text, which operators set by hand and
+// often leave behind after the game ends. In the active (unfinished) game, a side one rally away
+// from winning it holds game point: 20 or more and ahead, or 29 (so 29-all gives both sides one).
+// It is match point when that side has already won a game.
+export function pointStatus(match: CourtMatch): [PointStatus, PointStatus] {
+  const none: [PointStatus, PointStatus] = [null, null];
+  if (matchProgress(match).winner !== null) return none;
+  const game = currentGame(match);
+  const scores = match.sides.map((side) => side.scores[game] ?? 0);
+  if (gameWinner(scores[0], scores[1]) !== null) return none;
+  const wins = [0, 0];
+  for (let g = 0; g < game; g++) {
+    const winner = gameWinner(match.sides[0].scores[g], match.sides[1].scores[g]);
+    if (winner !== null) wins[winner]++;
+  }
+  return [0, 1].map((side) => {
+    const own = scores[side];
+    const other = scores[1 - side];
+    if (!((own >= 20 && own > other) || own === 29)) return null;
+    return wins[side] >= 1 ? "match" : "game";
+  }) as [PointStatus, PointStatus];
+}
+
+// Game and match point badges come from pointStatus(); a feed message saying the same is dropped.
+export function footerMessage(message: string): string {
+  return /\b(game|match)\s*point\b/i.test(message) ? "" : message;
 }
 
 export function categoryLabel(code: string): string {
