@@ -17,6 +17,18 @@
   --font-display: var(--font-barlow-condensed), sans-serif;
   /* Hourglass: rest while the sand runs, flip 180°, rest, flip again (one 5s cycle = two flips). */
   --animate-hourglass: hourglass 5s ease-in-out infinite;
+  /* Score roll (RollScore): a short, fading move. --roll-dir is 1 for a higher score (rolls up) and
+     -1 for a lower one (rolls down). */
+  --animate-roll-in: roll-in 0.3s ease-out both;
+  --animate-roll-out: roll-out 0.3s ease-out both;
+  @keyframes roll-in {
+    from { transform: translateY(calc(var(--roll-dir, 1) * 40%)); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes roll-out {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(calc(var(--roll-dir, 1) * -40%)); opacity: 0; }
+  }
   @keyframes hourglass {
     0%, 40% { transform: rotate(0deg); }
     50%, 90% { transform: rotate(180deg); }
@@ -32,11 +44,20 @@ button, select { cursor: pointer; }
 button:disabled { cursor: default; }
 a { text-decoration: none; }
 
+/* Fullscreen layout: on while the toggle sets data-fullscreen on <html>, and only from 1536px (2xl),
+   where the toggle is shown. */
+@custom-variant full {
+  @media (width >= 96rem) {
+    &:where([data-fullscreen] *) { @slot; }
+  }
+}
+
 /* Centered page column shared by the header, scoreboard and footer. */
 @utility page-width {
   width: min(1280px, calc(100% - 32px));
   margin-inline: auto;
   @media (width >= 40rem) { width: min(1280px, calc(100% - 56px)); }
+  @variant full { width: calc(100% - 48px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

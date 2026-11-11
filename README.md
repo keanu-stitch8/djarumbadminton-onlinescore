@@ -28,6 +28,9 @@ layout and shows every court together, without pagination or automatic rotation.
 redirects to `/`. Every court is shown with no filters or search controls. The main heading uses
 the full event name from the supplied reference logo, rather than a Firebase field or an
 abbreviation. Data refreshes every two seconds while visible, and stale source data is labeled.
+A changed score rolls with a short fade (`roll-score.tsx`): up like an odometer when it
+rises, down when it is corrected lower; the first load and reduced-motion settings show it without
+the roll.
 Country flags have a 4:3 ratio and no code label; a country without a flag shows its code
 in the placeholder.
 Flags for the participating countries (Indonesia, Malaysia, Philippines, Singapore, Austria,
@@ -64,9 +67,16 @@ separate from a personal Google login. Browser requests use `/api/scores`; crede
 - [Scoreboard data flow](docs/matches-data-flow.md): source contract, layer ownership, trust
   boundary, freshness, errors and consumers in this app.
 - Styling: components use inline Tailwind utility classes. `src/app/globals.css` only holds the
-  theme tokens, base element styles and the `page-width` container utility. Only the default
-  Tailwind breakpoints are used: `sm` (640px) for tablets and `lg` (1024px) for the wide court layout. Board building blocks (toolbar,
+  theme tokens, base element styles, the `page-width` container utility and the `full:` variant.
+  Only the default Tailwind breakpoints are used: `sm` (640px) for tablets, `lg` (1024px) for the
+  wide court layout and `2xl` (1536px) for the fullscreen button. Board building blocks (toolbar,
   alerts, footer) live in `src/modules/scores/components/board-parts.tsx`.
+- Fullscreen (TV / LED screens): from 1536px the toolbar shows a fullscreen button
+  (`fullscreen-toggle.tsx`). It sets `data-fullscreen` on `<html>` and requests browser fullscreen;
+  Esc or the button turns it off. Classes with the `full:` variant apply only in that mode and only
+  from 1536px: full-width header, board and footer, two courts per row (six rows, an odd last
+  court centered), shorter cards and no board footer. The layout is designed for 1920 × 1080 (12 courts on one screen) and zoomed to the
+  actual screen (`--fs-zoom`), so 1536 × 864, 1080p and 4K screens show the same page.
 
 ## Logo assets
 
