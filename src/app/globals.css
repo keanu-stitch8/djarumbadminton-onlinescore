@@ -15,6 +15,13 @@
   --color-ring: #3158b9;
   --font-sans: var(--font-inter), sans-serif;
   --font-display: var(--font-barlow-condensed), sans-serif;
+  /* Hourglass: rest while the sand runs, flip 180°, rest, flip again (one 5s cycle = two flips). */
+  --animate-hourglass: hourglass 5s ease-in-out infinite;
+  @keyframes hourglass {
+    0%, 40% { transform: rotate(0deg); }
+    50%, 90% { transform: rotate(180deg); }
+    100% { transform: rotate(360deg); }
+  }
 }
 
 :root { --background: #f5f6f9; --foreground: #17213c; }
