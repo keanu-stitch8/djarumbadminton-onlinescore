@@ -78,12 +78,14 @@ keeps as is:
 - Organizations: the BWF vector logo (`bwf.svg`, from Wikimedia Commons), Badminton Asia (from
   Indonesian Wikipedia, trimmed to 169 × 70; the only size published there), the PBSI crest (from
   pbsi.id, trimmed and resized to 234 × 256) and a 467 × 91 Djarum Foundation export.
-- Sponsors, all white for the dark footer: 5 Days Croissant, Blibli, FOX'S, Gajah, Hydroplus and
-  Polytron are the SVGs from srikandimerdekacup.com as published; SariWangi is that site's PNG,
-  trimmed to 373 × 146. Caffino is the right-hand half of the site's `logo-smc-full.svg` (the
-  Srikandi Merdeka Cup mark and divider removed, viewBox fitted to the Caffino shapes). Victor is a
+- Sponsors, all white for the dark footer: 5 Days Croissant, Blibli, Gajah, Hydroplus and Polytron
+  are the SVGs from srikandimerdekacup.com as published; SariWangi is that site's PNG, trimmed to
+  373 × 146. Caffino is the right-hand half of the site's `logo-smc-full.svg` (the Srikandi
+  Merdeka Cup mark and divider removed, viewBox fitted to the Caffino shapes). Victor is a
   VectorSeek SVG with the blue box, orange bar and watermark removed, leaving the white mark and
-  wordmark.
+  wordmark. FOX'S is traced
+  from the official 1072 × 580 PNG on savoria.co.id (wordmark, ® and pill outline, potrace at 4×),
+  recoloured white and fitted to the outline.
 Crop bounds are in [manifest.json](public/logos/manifest.json).
 
 Regenerate from the original image:

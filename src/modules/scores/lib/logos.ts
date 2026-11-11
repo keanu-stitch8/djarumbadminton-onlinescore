@@ -22,7 +22,7 @@ export const sponsors: Logo[] = [
   { id: "5-days-croissant", file: "5-days-croissant.svg", name: "5 Days Croissant", width: 142, height: 149, className: squareHeight },
   { id: "blibli", file: "blibli.svg", name: "Blibli", width: 240, height: 84, className: wordmarkHeight },
   { id: "caffino", file: "caffino.svg", name: "Caffino", width: 344, height: 147, className: wordmarkHeight },
-  { id: "foxs", file: "foxs.svg", name: "FOX'S", width: 242, height: 116, className: wordmarkHeight },
+  { id: "foxs", file: "foxs.svg", name: "FOX'S", width: 700, height: 246, className: wordmarkHeight },
   { id: "gajah", file: "gajah.svg", name: "Gajah", width: 138, height: 147, className: squareHeight },
   { id: "hydro-plus", file: "hydro-plus.svg", name: "Hydroplus", width: 156, height: 112, className: "h-[26px] sm:h-[25px] lg:h-[31px]" },
   { id: "polytron", file: "polytron.svg", name: "Polytron", width: 295, height: 38, className: "order-2 h-3 sm:order-none sm:h-[13px] lg:h-3.5" },
