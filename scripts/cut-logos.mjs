@@ -8,18 +8,15 @@ const directory = resolve("public/logos");
 await mkdir(directory, { recursive: true });
 const logos = [
   ["milklife-ijis-2026", "MilkLife Indonesia Junior International Series 2026", 39, 16, 183, 144, "white"],
-  ["5-days-croissant", "5 Days Croissant", 285, 838, 134, 53, "black"],
-  ["blibli", "Blibli", 432, 837, 120, 50, "black"],
-  ["caffino", "Caffino", 562, 841, 90, 47, "black"],
-  ["foxs", "FOX'S", 666, 846, 89, 40, "black"],
-  ["gajah", "Gajah", 771, 836, 56, 55, "black"],
-  ["hydro-plus", "Hydroplus", 838, 839, 80, 57, "black"],
-  ["polytron", "Polytron", 928, 846, 134, 40, "black"],
-  ["sariwangi", "SariWangi", 1077, 837, 112, 54, "black"],
-  ["victor", "Victor", 1206, 846, 143, 40, "black"],
 ];
 // Supplied as separate sharp exports instead of being cropped from the reference; never overwritten.
-const supplied = [["bwf", "BWF", "bwf.svg"], ["badminton-asia", "Badminton Asia", "badminton-asia.png"], ["pbsi", "PBSI", "pbsi.png"], ["djarum-foundation", "Bakti Olahraga Djarum Foundation", "djarum-foundation.png"]];
+const supplied = [
+  ["bwf", "BWF", "bwf.svg"], ["badminton-asia", "Badminton Asia", "badminton-asia.png"], ["pbsi", "PBSI", "pbsi.png"], ["djarum-foundation", "Bakti Olahraga Djarum Foundation", "djarum-foundation.png"],
+  // White sponsor logos, mostly from srikandimerdekacup.com (see the README).
+  ["5-days-croissant", "5 Days Croissant", "5-days-croissant.svg"], ["blibli", "Blibli", "blibli.svg"], ["caffino", "Caffino", "caffino.svg"],
+  ["foxs", "FOX'S", "foxs.svg"], ["gajah", "Gajah", "gajah.svg"], ["hydro-plus", "Hydroplus", "hydro-plus.svg"],
+  ["polytron", "Polytron", "polytron.svg"], ["sariwangi", "SariWangi", "sariwangi.png"], ["victor", "Victor", "victor.svg"],
+];
 const metadata = await sharp(source).metadata();
 if (metadata.width !== 1600 || metadata.height !== 900) throw new Error("Expected the original 1600 × 900 reference image.");
 const manifest = [];
@@ -53,4 +50,4 @@ for (const [id, name, file] of supplied) {
   manifest.push({ id, name, file: `/logos/${file}`, width, height, supplied: true });
 }
 await writeFile(`${directory}/manifest.json`, JSON.stringify(manifest, null, 2) + "\n");
-console.log(`Extracted ${manifest.length} separate transparent logo PNGs.`);
+console.log(`Wrote ${manifest.length} logos to the manifest.`);

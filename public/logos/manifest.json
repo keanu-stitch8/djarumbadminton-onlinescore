@@ -13,123 +13,6 @@
     }
   },
   {
-    "id": "5-days-croissant",
-    "name": "5 Days Croissant",
-    "file": "/logos/5-days-croissant.png",
-    "width": 134,
-    "height": 53,
-    "crop": {
-      "left": 285,
-      "top": 838,
-      "width": 134,
-      "height": 53
-    }
-  },
-  {
-    "id": "blibli",
-    "name": "Blibli",
-    "file": "/logos/blibli.png",
-    "width": 120,
-    "height": 50,
-    "crop": {
-      "left": 432,
-      "top": 837,
-      "width": 120,
-      "height": 50
-    }
-  },
-  {
-    "id": "caffino",
-    "name": "Caffino",
-    "file": "/logos/caffino.png",
-    "width": 90,
-    "height": 47,
-    "crop": {
-      "left": 562,
-      "top": 841,
-      "width": 90,
-      "height": 47
-    }
-  },
-  {
-    "id": "foxs",
-    "name": "FOX'S",
-    "file": "/logos/foxs.png",
-    "width": 89,
-    "height": 40,
-    "crop": {
-      "left": 666,
-      "top": 846,
-      "width": 89,
-      "height": 40
-    }
-  },
-  {
-    "id": "gajah",
-    "name": "Gajah",
-    "file": "/logos/gajah.png",
-    "width": 56,
-    "height": 55,
-    "crop": {
-      "left": 771,
-      "top": 836,
-      "width": 56,
-      "height": 55
-    }
-  },
-  {
-    "id": "hydro-plus",
-    "name": "Hydroplus",
-    "file": "/logos/hydro-plus.png",
-    "width": 80,
-    "height": 57,
-    "crop": {
-      "left": 838,
-      "top": 839,
-      "width": 80,
-      "height": 57
-    }
-  },
-  {
-    "id": "polytron",
-    "name": "Polytron",
-    "file": "/logos/polytron.png",
-    "width": 134,
-    "height": 40,
-    "crop": {
-      "left": 928,
-      "top": 846,
-      "width": 134,
-      "height": 40
-    }
-  },
-  {
-    "id": "sariwangi",
-    "name": "SariWangi",
-    "file": "/logos/sariwangi.png",
-    "width": 112,
-    "height": 54,
-    "crop": {
-      "left": 1077,
-      "top": 837,
-      "width": 112,
-      "height": 54
-    }
-  },
-  {
-    "id": "victor",
-    "name": "Victor",
-    "file": "/logos/victor.png",
-    "width": 143,
-    "height": 40,
-    "crop": {
-      "left": 1206,
-      "top": 846,
-      "width": 143,
-      "height": 40
-    }
-  },
-  {
     "id": "bwf",
     "name": "BWF",
     "file": "/logos/bwf.svg",
@@ -159,6 +42,78 @@
     "file": "/logos/djarum-foundation.png",
     "width": 467,
     "height": 91,
+    "supplied": true
+  },
+  {
+    "id": "5-days-croissant",
+    "name": "5 Days Croissant",
+    "file": "/logos/5-days-croissant.svg",
+    "width": 14,
+    "height": 15,
+    "supplied": true
+  },
+  {
+    "id": "blibli",
+    "name": "Blibli",
+    "file": "/logos/blibli.svg",
+    "width": 24,
+    "height": 8,
+    "supplied": true
+  },
+  {
+    "id": "caffino",
+    "name": "Caffino",
+    "file": "/logos/caffino.svg",
+    "width": 344,
+    "height": 147,
+    "supplied": true
+  },
+  {
+    "id": "foxs",
+    "name": "FOX'S",
+    "file": "/logos/foxs.svg",
+    "width": 24,
+    "height": 12,
+    "supplied": true
+  },
+  {
+    "id": "gajah",
+    "name": "Gajah",
+    "file": "/logos/gajah.svg",
+    "width": 14,
+    "height": 15,
+    "supplied": true
+  },
+  {
+    "id": "hydro-plus",
+    "name": "Hydroplus",
+    "file": "/logos/hydro-plus.svg",
+    "width": 16,
+    "height": 11,
+    "supplied": true
+  },
+  {
+    "id": "polytron",
+    "name": "Polytron",
+    "file": "/logos/polytron.svg",
+    "width": 30,
+    "height": 4,
+    "supplied": true
+  },
+  {
+    "id": "sariwangi",
+    "name": "SariWangi",
+    "file": "/logos/sariwangi.png",
+    "width": 373,
+    "height": 146,
+    "supplied": true
+  },
+  {
+    "id": "victor",
+    "name": "Victor",
+    "file": "/logos/victor.svg",
+    "width": 405,
+    "height": 57,
     "supplied": true
   }
 ]

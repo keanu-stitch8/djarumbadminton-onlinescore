@@ -70,13 +70,20 @@ separate from a personal Google login. Browser requests use `/api/scores`; crede
 
 ## Logo assets
 
-Fourteen separate transparent PNGs are in [public/logos](public/logos), including the event logo,
-four organization logos and nine sponsors. Most are cropped from the supplied 1600 × 900 reference;
-small text retains the source image's original resolution. The four organization logos are
-separate higher-resolution files (`"supplied": true` in the manifest) that the script below keeps
-as is: the BWF vector logo (`bwf.svg`, from Wikimedia Commons), Badminton Asia (from Indonesian
-Wikipedia, trimmed to 169 × 70; the only size published there), the PBSI crest (from pbsi.id,
-trimmed and resized to 234 × 256) and a 467 × 91 Djarum Foundation export.
+Fourteen separate transparent logos are in [public/logos](public/logos): the event logo, four
+organization logos and nine sponsors. Only the event logo is cropped from the supplied 1600 × 900
+reference. The rest are separate files (`"supplied": true` in the manifest) that the script below
+keeps as is:
+
+- Organizations: the BWF vector logo (`bwf.svg`, from Wikimedia Commons), Badminton Asia (from
+  Indonesian Wikipedia, trimmed to 169 × 70; the only size published there), the PBSI crest (from
+  pbsi.id, trimmed and resized to 234 × 256) and a 467 × 91 Djarum Foundation export.
+- Sponsors, all white for the dark footer: 5 Days Croissant, Blibli, FOX'S, Gajah, Hydroplus and
+  Polytron are the SVGs from srikandimerdekacup.com as published; SariWangi is that site's PNG,
+  trimmed to 373 × 146. Caffino is the right-hand half of the site's `logo-smc-full.svg` (the
+  Srikandi Merdeka Cup mark and divider removed, viewBox fitted to the Caffino shapes). Victor is a
+  VectorSeek SVG with the blue box, orange bar and watermark removed, leaving the white mark and
+  wordmark.
 Crop bounds are in [manifest.json](public/logos/manifest.json).
 
 Regenerate from the original image:
