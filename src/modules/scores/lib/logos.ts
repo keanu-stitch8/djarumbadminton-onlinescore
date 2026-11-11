@@ -1,16 +1,16 @@
 // Logo data for the header (partners) and footer (sponsors), served from public/logos.
 export type Logo = { id: string; file: string; name: string; width: number; height: number; className: string };
 
-// Phones (< 640px) stack the partners in two centered rows: Djarum Foundation + PBSI, then BWF +
-// Badminton Asia (the `order` classes plus the full-width ::before break in the container).
-// From 640px they sit in one row in source order. BWF is a vector SVG (served as is), the others
-// are separate higher-resolution files; heights keep each visible mark the same size as the
-// earlier padded crops.
+// Partners sit in one row in source order. On phones (< 640px) each logo's width is a share of
+// the row, in the same proportions as the 640px sizes (88% logos, the rest spread as gaps), so the
+// row always fits the screen. From 640px heights are fixed. BWF is a vector SVG (served as is),
+// the others are separate higher-resolution files; heights keep each visible mark the same size
+// as the earlier padded crops.
 export const partners: Logo[] = [
-  { id: "bwf", file: "bwf.svg", name: "BWF", width: 180, height: 145, className: "order-4 h-[45px] sm:order-none sm:h-[31px] lg:h-[38px]" },
-  { id: "badminton-asia", file: "badminton-asia.png", name: "Badminton Asia", width: 169, height: 70, className: "order-5 h-[37px] sm:order-none sm:h-[27px] lg:h-[31px]" },
-  { id: "pbsi", file: "pbsi.png", name: "PBSI", width: 234, height: 256, className: "order-2 h-[52px] sm:order-none sm:h-9 lg:h-[42px]" },
-  { id: "djarum-foundation", file: "djarum-foundation.png", name: "Bakti Olahraga Djarum Foundation", width: 467, height: 91, className: "order-1 h-10 sm:order-none sm:h-[23px] lg:h-7" },
+  { id: "bwf", file: "bwf.svg", name: "BWF", width: 180, height: 145, className: "w-[13.2%] sm:h-[31px] lg:h-[38px]" },
+  { id: "badminton-asia", file: "badminton-asia.png", name: "Badminton Asia", width: 169, height: 70, className: "w-[22.5%] sm:h-[27px] lg:h-[31px]" },
+  { id: "pbsi", file: "pbsi.png", name: "PBSI", width: 234, height: 256, className: "w-[11.4%] sm:h-9 lg:h-[42px]" },
+  { id: "djarum-foundation", file: "djarum-foundation.png", name: "Bakti Olahraga Djarum Foundation", width: 467, height: 91, className: "w-[40.9%] sm:h-[23px] lg:h-7" },
 ];
 // Sponsor logos are white and cropped tight to the mark. Heights are tuned per shape so every mark
 // reads at about the same size: square-ish marks get more height, long wordmarks less. Phones

@@ -8,7 +8,7 @@ export function BrandHeader() {
     <header className="border-b border-[#eef0f5] bg-white">
       <div className="page-width flex flex-col items-center justify-center gap-3 py-3.5 sm:min-h-[125px] sm:flex-row sm:justify-between sm:gap-4 sm:py-3 lg:min-h-[120px] lg:justify-start lg:gap-[22px] lg:py-[17px]">
         <Link href="/" aria-label="Beranda live score" className="block flex-none"><Image src={withBasePath("/logos/milklife-ijis-2026.png")} alt="MilkLife Indonesia Junior International Series 2026" width={183} height={144} className="h-auto w-30 sm:w-[114px] lg:w-[116px]" priority /></Link>
-        <div className="flex flex-wrap items-center justify-center gap-x-3.5 gap-y-2.5 before:order-3 before:h-0 before:basis-full before:content-[''] sm:flex-nowrap sm:justify-end sm:gap-6 sm:before:hidden lg:ml-auto lg:gap-[27px]" aria-label="Organisasi pendukung">{partners.map((p) => <Image key={p.id} src={withBasePath(`/logos/${p.file}`)} alt={p.name} width={p.width} height={p.height} className={`w-auto object-contain ${p.className}`} unoptimized={p.file.endsWith(".svg")} />)}</div>
+        <div className="flex w-full items-center justify-between sm:w-auto sm:justify-end sm:gap-6 lg:ml-auto lg:gap-[27px]" aria-label="Organisasi pendukung">{partners.map((p) => <Image key={p.id} src={withBasePath(`/logos/${p.file}`)} alt={p.name} width={p.width} height={p.height} className={`h-auto object-contain sm:w-auto ${p.className}`} unoptimized={p.file.endsWith(".svg")} />)}</div>
       </div>
     </header>
   );
